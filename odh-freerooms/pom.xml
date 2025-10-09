@@ -14,12 +14,12 @@ SPDX-License-Identifier: CC0-1.0
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>alpinebitsserver-odh-root</artifactId>
-        <version>4.0.0</version>
+        <version>5.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>odh-freerooms</artifactId>
-    <version>4.0.0</version>
+    <version>5.0.0</version>
 
     <packaging>pom</packaging>
     <name>AlpineBits FreeRooms action with ODH backend</name>

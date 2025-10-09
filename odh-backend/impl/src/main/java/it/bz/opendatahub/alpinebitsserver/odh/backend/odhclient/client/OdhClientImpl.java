@@ -18,7 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth.AuthProvider;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth.AuthenticationException;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2020_10.serialization.OtaModule202010;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.serialization.OtaJaxbModule;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
@@ -58,7 +58,7 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
             this.isAuthenticated = true;
         } catch (AuthenticationException e) {
             this.isAuthenticated = false;
-            throw new AuthenticationException("Authentication error", e);
+            throw new AuthenticationException("invalid or missing username/password", e);
         }
     }
 
@@ -136,7 +136,7 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
         om.registerModule(new JaxbAnnotationModule());
 
         // Add serialization module for AlpineBits 2020-10 (JAXBElement serializations)
-        om.registerModule(new OtaModule202010());
+        om.registerModule(new OtaJaxbModule());
 
         JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
         provider.setMapper(om);

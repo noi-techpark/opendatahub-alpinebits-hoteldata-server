@@ -25,7 +25,7 @@ public final class RoutingMiddlewareProvider {
     }
 
     /**
-     * Build and return the a routing middleware that supports the
+     * Build and return the routing middleware that supports the
      * AlpineBits Housekeeping, FreeRooms and Inventory actions.
      *
      * @return a routing middleware supporting the AlpineBits
@@ -33,7 +33,8 @@ public final class RoutingMiddlewareProvider {
      */
     public static Middleware buildRoutingMiddleware() {
         DefaultRouter.Builder builder = new DefaultRouter.Builder();
-        RoutingBuilder.FinalBuilder fb = RoutesFor202210.routes(builder);
+        RoutingBuilder.FinalBuilder fb = RoutesFor202410.routes(builder);
+        fb = RoutesFor202210.routes(fb.and());
         fb = RoutesFor202010.routes(fb.and());
         fb = RoutesFor201810.routes(fb.and());
         fb = RoutesFor201710.routes(fb.and());

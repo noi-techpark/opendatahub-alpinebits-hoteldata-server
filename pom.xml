@@ -20,7 +20,7 @@ SPDX-License-Identifier: CC0-1.0
 
     <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>alpinebitsserver-odh-root</artifactId>
-    <version>4.0.0</version>
+    <version>5.0.0</version>
 
     <packaging>pom</packaging>
     <name>AlpineBits Server with ODH as backend</name>
@@ -42,7 +42,7 @@ SPDX-License-Identifier: CC0-1.0
 <!--    </repositories>-->
 
     <properties>
-        <odh-alpinebits.version>3.0.0</odh-alpinebits.version>
+        <odh-alpinebits.version>4.0.1</odh-alpinebits.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
@@ -62,8 +62,7 @@ SPDX-License-Identifier: CC0-1.0
 
         <testng.version>7.5.1</testng.version>
         <arquillian.version>1.8.0.Final</arquillian.version>
-        <rest-assured.version>5.4.0</rest-assured.version>
-        <mock-server.version>5.11.1</mock-server.version>
+        <rest-assured.version>5.5.6</rest-assured.version>
 
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -163,63 +162,106 @@ SPDX-License-Identifier: CC0-1.0
 
     <dependencyManagement>
         <dependencies>
-            <!-- Force usage of logback-classic 1.2.13, because 1.2.12 brought by spring-boot 2.7.18 has vulnerabilities -->
+            <!--
+                Use current version of commons-io to fix a security vulnerability
+                introduced by org.apache.commons:commons-fileupload2-javax in
+                alpinebits-servlet-impl module.
+            -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.20.0</version>
+            </dependency>
+            <!--
+                Use current version of commons-codec to fix a security vulnerability
+                introduced by io.rest-assured:rest-assured
+            -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.19.0</version>
+            </dependency>
+            <!--
+                Use most up-to-date compatible version of jackson-core to fix a security vulnerability
+                introduced by org.glassfish.jersey.media:jersey-media-json-jackson
+            -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.15.0</version>
+            </dependency>
+            <!--
+                Use most up-to-date compatible version of logback-classic to fix a security vulnerability
+                introduced by org.springframework.boot:spring-boot-starter-logging
+            -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>1.2.13</version>
             </dependency>
-            <!-- Force usage of logback-core 1.2.13, because 1.2.12 brought by spring-boot 2.7.18 has vulnerabilities -->
+            <!--
+                Use most up-to-date compatible version of logback-core to fix a security vulnerability
+                introduced by org.springframework.boot:spring-boot-starter-logging
+            -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
                 <version>1.2.13</version>
             </dependency>
+            <!--
+                Use current version of commons-lang3 to fix a security vulnerability
+                introduced by io.rest-assured:rest-assured
+            -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.18.0</version>
+            </dependency>
 
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-environment</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-middleware-config</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-routing</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-api</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-impl</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-api</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-impl</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-api</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-impl</artifactId>
-                <version>4.0.0</version>
+                <version>5.0.0</version>
             </dependency>
 
             <!-- AlpineBits library dependencies -->
@@ -321,12 +363,6 @@ SPDX-License-Identifier: CC0-1.0
                 <groupId>io.rest-assured</groupId>
                 <artifactId>xml-path</artifactId>
                 <version>${rest-assured.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mock-server</groupId>
-                <artifactId>mockserver-netty</artifactId>
-                <version>${mock-server.version}</version>
                 <scope>test</scope>
             </dependency>
 

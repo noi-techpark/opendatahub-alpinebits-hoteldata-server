@@ -10,34 +10,20 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth;
 
-import org.mockserver.integration.ClientAndServer;
-import org.mockserver.model.HttpResponse;
-import org.mockserver.socket.PortFactory;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 import org.testng.annotations.Test;
 
-import static org.mockserver.model.HttpRequest.request;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+
 import static org.testng.Assert.assertEquals;
 
 /**
  * Tests for {@link OpenIdAuthProvider}.
  */
 public class OpenIdAuthProviderTest {
-
-    private ClientAndServer server;
-    private String serverUrl;
-
-    @BeforeClass
-    private void init() {
-        server = ClientAndServer.startClientAndServer(PortFactory.findFreePort());
-        serverUrl = "http://localhost:" + server.getPort();
-    }
-
-    @AfterClass
-    private void destroy() {
-        server.stop();
-    }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void testBuilder_ShouldThrow_WhenAuthUrlIsNull() {
@@ -51,29 +37,50 @@ public class OpenIdAuthProviderTest {
     }
 
     @Test(expectedExceptions = AuthenticationException.class)
-    public void testAuthenticate_ShouldThrow_OnAuthenticationError() {
-        server
-                .reset()
-                .when(request().withMethod("POST"))
-                .respond(HttpResponse.response().withStatusCode(401));
+    public void testAuthenticate_ShouldThrow_OnAuthenticationError() throws IOException {
+        HttpServer server = buildServer(exchange -> {
+            exchange.sendResponseHeaders(401, -1);
+            exchange.close();
+        });
+        server.start();
+
+        String serverUrl = getServerUrl(server);
 
         OpenIdAuthProvider openIdAuthProvider = new OpenIdAuthProvider.Builder(serverUrl, "some", "value").build();
         openIdAuthProvider.authenticate();
     }
 
     @Test
-    public void testAuthenticate_ShouldReturnAuthentication() {
+    public void testAuthenticate_ShouldReturnAuthentication() throws IOException {
         String expectedToken = "123";
-        server
-                .reset()
-                .when(request().withMethod("POST"))
-                .respond(HttpResponse
-                        .response()
-                        .withBody("{\"access_token\":\"" + expectedToken + "\"}")
-                        .withHeader("Content-type", "application/json"));
+
+        HttpServer server = buildServer(exchange -> {
+            String response = "{\"access_token\":\"" + expectedToken + "\"}";
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, response.length());
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        });
+        server.start();
+
+        String serverUrl = getServerUrl(server);
 
         OpenIdAuthProvider openIdAuthProvider = new OpenIdAuthProvider.Builder(serverUrl, "some", "value").build();
         String token = openIdAuthProvider.authenticate();
         assertEquals(token, expectedToken);
+
+        server.stop(0);
+    }
+
+    private HttpServer buildServer(HttpHandler handler) throws IOException {
+        HttpServer server = HttpServer.create(new InetSocketAddress(0), 0);
+        server.createContext("/", handler);
+        return server;
+    }
+
+    private String getServerUrl(HttpServer server) {
+        int port = server.getAddress().getPort();
+        return "http://localhost:" + port;
     }
 }
