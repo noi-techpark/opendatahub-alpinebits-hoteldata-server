@@ -1,8 +1,0 @@
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: odh-alpinebits-server
-Upstream-Contact: NOI Techpark <digital@noi.bz.it>
-Source: https://github.com/noi-techpark/odh-alpinebits-server
-
-Files: .github/* infrastructure .gitignore .pre-commit-config.yaml LICENSE .env.example alpine_bits_rgb.png *.properties application-spring/src/main/resources/* odh-inventory/impl/src/main/resources/*
-Copyright: (c) NOI Techpark <digital@noi.bz.it>
-License: CC0-1.0

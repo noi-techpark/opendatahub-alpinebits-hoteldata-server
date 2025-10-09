@@ -16,7 +16,7 @@ env:
 jobs:
   # Test
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
 
   # Deploy test
   deploy-test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test
@@ -68,7 +68,7 @@ jobs:
 
   # Deploy prod
   deploy-prod:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/prod'
     needs: test
     concurrency: deploy-prod
