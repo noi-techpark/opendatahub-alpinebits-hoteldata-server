@@ -10,12 +10,16 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth;
 
+import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
+
 /**
- * This exception is thrown if an authentication attempt was not successful.
+ * This exception is thrown when the authentication for a request was not successful.
  */
-public class AuthenticationException extends RuntimeException {
+public class AuthenticationException extends AlpineBitsException {
+
+    public static final int STATUS = 401;
 
     public AuthenticationException(String message, Throwable cause) {
-        super(message, cause);
+        super(message, STATUS, cause);
     }
 }

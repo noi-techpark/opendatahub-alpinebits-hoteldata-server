@@ -78,6 +78,9 @@ public final class HotelInvCountNotifPushMiddlewareBuilder {
         if (AlpineBitsVersion.V_2022_10.equals(alpineBitsVersion)) {
             return new it.bz.opendatahub.alpinebits.validation.schema.v_2022_10.freerooms.OTAHotelInvCountNotifRQValidator();
         }
+        if (AlpineBitsVersion.V_2024_10.equals(alpineBitsVersion)) {
+            return new it.bz.opendatahub.alpinebits.validation.schema.v_2024_10.freerooms.OTAHotelInvCountNotifRQValidator();
+        }
         throw new IllegalArgumentException("The AlpineBits version " + alpineBitsVersion + " is not supported for OTAHotelInvCountNotifRQ");
     }
 

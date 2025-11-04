@@ -10,6 +10,7 @@
 
 package it.bz.opendatahub.alpinebitsserver.application.spring.middleware;
 
+import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsAction;
 import it.bz.opendatahub.alpinebits.common.context.RequestContextKey;
 import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.middleware.Context;
@@ -23,11 +24,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This middleware extracts the multipart/form-data from the request.
  */
 public class MultipartFormExtractorMiddleware implements Middleware {
+
+    // List of actions that do not require a "request" part
+    private final List<String> actionsWithoutRequest = Arrays.asList(
+            AlpineBitsAction.GET_VERSION,
+            AlpineBitsAction.GET_CAPABILITIES
+    );
 
     @Override
     public void handleContext(Context ctx, MiddlewareChain chain) {
@@ -35,10 +45,19 @@ public class MultipartFormExtractorMiddleware implements Middleware {
             HttpServletRequest httpServletRequest = ctx.getOrThrow(ServletContextKey.SERVLET_REQUEST);
 
             Part actionPart = httpServletRequest.getPart("action");
-            String action = IOUtils.toString(actionPart.getInputStream());
+            if (actionPart == null) {
+                throw new AlpineBitsException("unknown or missing action", 400);
+            }
+            String action = IOUtils.toString(actionPart.getInputStream(), StandardCharsets.UTF_8);
             ctx.put(RequestContextKey.REQUEST_ACTION, action);
 
             Part requestPart = httpServletRequest.getPart("request");
+
+            // Check if the action requires a request part
+            if (requestPart == null && !actionsWithoutRequest.contains(action)) {
+                throw new AlpineBitsException("unknown or missing \"request\" param", 400);
+            }
+
             if (requestPart != null) {
                 InputStream request = requestPart.getInputStream();
                 ctx.put(RequestContextKey.REQUEST_CONTENT_STREAM, request);

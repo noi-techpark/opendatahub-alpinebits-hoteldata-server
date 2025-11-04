@@ -18,11 +18,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth.AuthProvider;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth.AuthenticationException;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2020_10.serialization.OtaModule202010;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.serialization.OtaJaxbModule;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
@@ -46,11 +44,9 @@ import java.util.Map;
  */
 public class OdhClientImpl implements AuthenticatedOdhClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OdhClientImpl.class);
-
     private final WebTarget webTarget;
+    private final String apiKey;
 
-    private String apiKey = "UNDEFINED";
     private boolean isAuthenticated;
 
     public OdhClientImpl(String baseUrl, AuthProvider<String> authProvider) {
@@ -61,10 +57,8 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
             this.apiKey = authProvider.authenticate();
             this.isAuthenticated = true;
         } catch (AuthenticationException e) {
-            String message = "Authentication error - ODH client proceeds with no authentication. Reason: " + e.getMessage();
-            // Log stacktrace only when debug output is enabled. Otherwise don't log the stacktrace
-            LOG.warn(message, LOG.isDebugEnabled() ? e : null);
             this.isAuthenticated = false;
+            throw new AuthenticationException("invalid or missing username/password", e);
         }
     }
 
@@ -79,11 +73,6 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
      * The resource is fetched from the given <code>path</code> using the specified
      * HTTP <code>method</code>. The <code>queryParams</code> are appended to the
      * request URL, the <code>body</code> is used as request body.
-     * <p>
-     * If the request fails with a {@link Response.Status#UNAUTHORIZED} HTTP status code,
-     * an automatic authentication is attempted exactly once. If the authentication succeeds,
-     * the request is repeated using the new API token and its result is returned. If the
-     * repeated request fails again, no matter the cause, it won't be retried.
      *
      * @param path        this path is used to fetch the resource
      * @param method      use this HTTP request method, e.g. GET, POST, PUT, ...
@@ -98,11 +87,12 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
      */
     @Override
     public <T> T fetch(String path, String method, Map<String, String> queryParams, Entity<?> body, GenericType<T> genericType) {
-        Response response = this.fetchWithAutomaticAuthentication(path, method, queryParams, body);
-        if (response.getStatus() >= 400) {
-            throw new WebApplicationException(response.getStatusInfo().toEnum());
+        try (Response response = this.fetchInternal(path, method, queryParams, body)) {
+            if (response.getStatus() >= 400) {
+                throw new WebApplicationException(response.getStatusInfo().toEnum());
+            }
+            return response.readEntity(genericType);
         }
-        return response.readEntity(genericType);
     }
 
     /**
@@ -112,10 +102,6 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
      * HTTP <code>method</code>. The <code>queryParams</code> are appended to the
      * request URL, the <code>body</code> is used as request body.
      * <p>
-     * If the request fails with a {@link Response.Status#UNAUTHORIZED} HTTP status code,
-     * an automatic authentication is attempted exactly once. If the authentication succeeds,
-     * the request is repeated using the new API token and its result is returned. If the
-     * repeated request fails again, no matter the cause, it won't be retried.
      *
      * @param path        this path is used to fetch the resource
      * @param method      use this HTTP request method, e.g. GET, POST, PUT, ...
@@ -129,11 +115,12 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
      */
     @Override
     public <T> T fetch(String path, String method, Map<String, String> queryParams, Entity<?> body, Class<T> resultClass) {
-        Response response = this.fetchWithAutomaticAuthentication(path, method, queryParams, body);
-        if (response.getStatus() >= 400) {
-            throw new WebApplicationException(response.getStatusInfo().toEnum());
+        try (Response response = this.fetchInternal(path, method, queryParams, body)) {
+            if (response.getStatus() >= 400) {
+                throw new WebApplicationException(response.getStatusInfo().toEnum());
+            }
+            return response.readEntity(resultClass);
         }
-        return response.readEntity(resultClass);
     }
 
     private Client buildClient() {
@@ -149,7 +136,7 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
         om.registerModule(new JaxbAnnotationModule());
 
         // Add serialization module for AlpineBits 2020-10 (JAXBElement serializations)
-        om.registerModule(new OtaModule202010());
+        om.registerModule(new OtaJaxbModule());
 
         JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
         provider.setMapper(om);
@@ -162,27 +149,16 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
     /**
      * Fetch the resource from the given <code>path</code>, appending <code>queryParams</code>
      * to the request URL.
-     * <p>
-     * If the fetch returns a {@link Response.Status#UNAUTHORIZED} HTTP status code, an
-     * authentication is attempted and the fetch is repeated one more time.
      *
      * @param path        this path is used to fetch the resource
      * @param queryParams are appended to the URL
      * @return {@link Response} that can be further handled
      */
-    private Response fetchWithAutomaticAuthentication(String path, String method, Map<String, String> queryParams, Entity<?> body) {
-        Invocation.Builder builder = this.prepareFetch(path, queryParams);
-
-        // Fetch resource
-        return builder.method(method, body);
-    }
-
-    private Invocation.Builder prepareFetch(String path, Map<String, String> queryParams) {
+    private Response fetchInternal(String path, String method, Map<String, String> queryParams, Entity<?> body) {
         WebTarget fetchTarget = this.buildFetchTarget(path, queryParams);
-
         Invocation.Builder request = fetchTarget.request(MediaType.APPLICATION_JSON);
-
-        return request.header("Authorization", "Bearer " + this.apiKey);
+        Invocation.Builder builder = request.header("Authorization", "Bearer " + this.apiKey);
+        return builder.method(method, body);
     }
 
     private WebTarget buildFetchTarget(String path, Map<String, String> queryParamsMap) {
