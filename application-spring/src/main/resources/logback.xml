@@ -9,8 +9,8 @@ SPDX-License-Identifier: CC0-1.0
 <configuration>
     <appender name="ConsoleWithRequestId" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-            <evaluator class="ch.qos.logback.classic.boolex.JaninoEventEvaluator">
-                <expression>return (mdc.get("requestId") != null);</expression>
+            <evaluator class="it.bz.opendatahub.alpinebitsserver.application.spring.logging.RequestIdExpressionEvaluator">
+                <onlyWhenRequestIdPresent>true</onlyWhenRequestIdPresent>
             </evaluator>
             <OnMismatch>DENY</OnMismatch>
             <OnMatch>ACCEPT</OnMatch>
@@ -23,8 +23,8 @@ SPDX-License-Identifier: CC0-1.0
     </appender>
     <appender name="ConsoleWithoutRequestId" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-            <evaluator class="ch.qos.logback.classic.boolex.JaninoEventEvaluator">
-                <expression>return (mdc.get("requestId") == null);</expression>
+            <evaluator class="it.bz.opendatahub.alpinebitsserver.application.spring.logging.RequestIdExpressionEvaluator">
+                <onlyWhenRequestIdMissing>true</onlyWhenRequestIdMissing>
             </evaluator>
             <OnMismatch>DENY</OnMismatch>
             <OnMatch>ACCEPT</OnMatch>

@@ -35,7 +35,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 To build the project, the following prerequisites must be met:
 
-- Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
+- Java JDK 25 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
 
 If you want to run the application using [Docker](https://www.docker.com/), the environment is already set up with all dependencies for you. You only have to install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) and follow the instruction in the [dedicated section](#execute-with-docker).

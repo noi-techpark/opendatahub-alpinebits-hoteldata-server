@@ -18,11 +18,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.FormattedTextTextType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.ObjectFactory;
+import jakarta.xml.bind.JAXBElement;
 
-import javax.xml.bind.JAXBElement;
 import java.io.IOException;
 
 /**
@@ -46,7 +46,7 @@ public class JAXBElementDeserializer extends JsonDeserializer<JAXBElement> {
     public JAXBElementDeserializer() {
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new JaxbAnnotationModule());
+        mapper.registerModule(new JakartaXmlBindAnnotationModule());
     }
 
     @Override

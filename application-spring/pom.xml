@@ -24,10 +24,6 @@ SPDX-License-Identifier: CC0-1.0
     <packaging>jar</packaging>
     <name>Standalone Spring application, providing an AlpineBits Server with Open Data Hub (ODH) backend</name>
 
-    <properties>
-        <janino.version>3.0.12</janino.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -36,10 +32,6 @@ SPDX-License-Identifier: CC0-1.0
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
@@ -54,11 +46,16 @@ SPDX-License-Identifier: CC0-1.0
             <artifactId>alpinebits-servlet-impl</artifactId>
         </dependency>
 
-        <!-- janino is used for logging evaluation (see logback.xml) -->
+        <!-- testing -->
         <dependency>
-            <groupId>org.codehaus.janino</groupId>
-            <artifactId>janino</artifactId>
-            <version>${janino.version}</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

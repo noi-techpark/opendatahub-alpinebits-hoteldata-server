@@ -12,14 +12,16 @@ package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.serializ
 
 import com.fasterxml.jackson.core.json.PackageVersion;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import jakarta.xml.bind.JAXBElement;
 
-import javax.xml.bind.JAXBElement;
+import java.io.Serial;
 
 /**
  * Custom Jackson serializer / deserializer module for ODH support.
  */
 public class OtaJaxbModule extends SimpleModule {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public OtaJaxbModule() {

@@ -12,10 +12,9 @@ package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2020_10.adapter.polic
 
 import it.bz.opendatahub.alpinebits.xml.schema.ota.FormattedTextTextType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.ParagraphType;
+import jakarta.xml.bind.JAXBElement;
 
-import javax.xml.bind.JAXBElement;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This adapter is used to remove elements from {@link ParagraphType} elements that are not
@@ -41,7 +40,7 @@ public final class ParagraphTypeAdapter {
         if (paragraphType.getTextsAndImagesAndURLS() != null) {
             List<JAXBElement<?>> result = paragraphType.getTextsAndImagesAndURLS().stream()
                     .filter(jaxbElement -> jaxbElement.getValue() instanceof FormattedTextTextType)
-                    .collect(Collectors.toList());
+                    .toList();
 
             result.forEach(jaxbElement -> ((FormattedTextTextType) jaxbElement.getValue()).setFormatted(null));
 
