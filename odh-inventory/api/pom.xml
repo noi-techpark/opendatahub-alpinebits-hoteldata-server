@@ -14,12 +14,12 @@ SPDX-License-Identifier: CC0-1.0
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>odh-inventory</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>odh-inventory-api</artifactId>
-    <version>6.0.0-SNAPSHOT</version>
+    <version>6.0.0</version>
 
     <name>AlpineBits Inventory action with ODH backend API</name>
 
