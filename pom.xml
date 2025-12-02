@@ -59,8 +59,6 @@ SPDX-License-Identifier: CC0-1.0
 
         <testng.version>7.11.0</testng.version>
         <rest-assured.version>5.5.6</rest-assured.version>
-        <!-- Provided and used by Mockito. Contains a java-agent for inline-mocks to make Mockito work with modern Java versions -->
-        <bytebuddy.version>1.17.8</bytebuddy.version>
 
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -567,11 +565,6 @@ SPDX-License-Identifier: CC0-1.0
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>
-                        -javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar
-                    </argLine>
-                </configuration>
             </plugin>
         </plugins>
     </build>
