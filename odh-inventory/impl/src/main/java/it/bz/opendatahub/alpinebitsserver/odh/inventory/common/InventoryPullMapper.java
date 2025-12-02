@@ -40,8 +40,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Mapping utility class for inventory pull actions.
@@ -88,7 +88,7 @@ public class InventoryPullMapper {
                         }
                     }
                     // Sort by RoomID (if such a value exists)
-                    realRooms.sort(Comparator.comparing(o -> o.getTypeRooms().isEmpty() ? "" : o.getTypeRooms().get(0).getRoomID()));
+                    realRooms.sort(Comparator.comparing(o -> o.getTypeRooms().isEmpty() ? "" : o.getTypeRooms().getFirst().getRoomID()));
 
                     // Concatenate room category information and all real rooms
                     List<GuestRoom> allRooms = new ArrayList<>();
@@ -98,7 +98,7 @@ public class InventoryPullMapper {
                     return allRooms;
                 })
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
 
         return buildOtaHotelDescriptiveInfo(guestRooms);
     }
@@ -124,7 +124,7 @@ public class InventoryPullMapper {
                     guestRoom.setMultimediaDescriptions(multimediaDescriptionsType);
                     return guestRoom;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         return buildOtaHotelDescriptiveInfo(guestRooms);
     }
@@ -196,8 +196,8 @@ public class InventoryPullMapper {
     private Amenities buildAmenities(AccommodationRoom room) {
         List<Amenity> amenitiesWithCode = room.getFeatures()
                 .stream()
-                .filter(feature -> feature.getRoomAmenityCodes() != null)
                 .map(Feature::getRoomAmenityCodes)
+                .filter(Objects::nonNull)
                 .flatMap(List::stream)
                 .distinct()
                 .sorted(Comparator.comparingInt(Integer::intValue))
@@ -206,7 +206,7 @@ public class InventoryPullMapper {
                     amenity.setRoomAmenityCode(roomAmenityCode.toString());
                     return amenity;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         Amenities amenities = new Amenities();
         amenities.getAmenities().addAll(amenitiesWithCode);
@@ -227,7 +227,7 @@ public class InventoryPullMapper {
                     description.setValue(value.getName());
                     return description;
                 })
-                .collect(Collectors.toList());
+                .toList();
         TextItem textItem = new TextItem();
         textItem.getDescriptions().addAll(descriptions);
 
@@ -254,7 +254,7 @@ public class InventoryPullMapper {
                     description.setValue(value.getLongdesc());
                     return description;
                 })
-                .collect(Collectors.toList());
+                .toList();
         TextItem textItem = new TextItem();
         textItem.getDescriptions().addAll(descriptions);
 
@@ -289,7 +289,7 @@ public class InventoryPullMapper {
 
                     return imageItem;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         ImageItemsType imageItemsType = new ImageItemsType();
         imageItemsType.getImageItems().addAll(imageItems);

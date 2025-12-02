@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Helper class to build {@link ContactInfosType} instances.
@@ -105,7 +104,7 @@ public final class ContactInfosTypeBuilder {
                     return isAddressEmpty(address) ? null : address;
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
 
         // If there are no addresses, return an empty Optional
         if (addresses.isEmpty()) {
@@ -160,7 +159,8 @@ public final class ContactInfosTypeBuilder {
                     phone.setPhoneNumber(number);
                     phone.setPhoneTechType(phoneTechType);
                     return phone;
-                }).collect(Collectors.toList());
+                })
+                .toList();
     }
 
     private static Optional<EmailsType> extractEmailsType(Accommodation accommodation) {
@@ -179,7 +179,7 @@ public final class ContactInfosTypeBuilder {
                     result.setValue(email);
                     return result;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         // If there are no emails, return an empty Optional
         if (emails.isEmpty()) {
@@ -206,7 +206,7 @@ public final class ContactInfosTypeBuilder {
                         result.setValue(website);
                         return result;
                     })
-                    .collect(Collectors.toList());
+                    .toList();
 
             urLsType.getURLS().addAll(urls);
         }
