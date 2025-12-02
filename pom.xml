@@ -23,7 +23,13 @@ SPDX-License-Identifier: CC0-1.0
     <version>6.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
+
     <name>AlpineBits Server with ODH as backend</name>
+    <description>Modular AlpineBits Server implementation using the AlpineBits Library and Open Data Hub (ODH) as backend.</description>
+    <url>https://www.alpinebits.org/</url>
+    <scm>
+        <url>https://github.com/noi-techpark/opendatahub-alpinebits-hoteldata-server</url>
+    </scm>
 
     <modules>
         <module>application-common</module>
@@ -157,47 +163,47 @@ SPDX-License-Identifier: CC0-1.0
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-environment</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-middleware-config</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-routing</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-api</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-impl</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-api</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-impl</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-api</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-impl</artifactId>
-                <version>6.0.0-SNAPSHOT</version>
+                <version>6.0.0</version>
             </dependency>
 
             <!-- AlpineBits library dependencies -->
