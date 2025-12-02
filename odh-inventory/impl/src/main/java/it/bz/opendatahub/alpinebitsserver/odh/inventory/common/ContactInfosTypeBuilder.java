@@ -34,6 +34,7 @@ import java.util.Set;
 /**
  * Helper class to build {@link ContactInfosType} instances.
  */
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public final class ContactInfosTypeBuilder {
 
     private ContactInfosTypeBuilder() {
@@ -73,6 +74,7 @@ public final class ContactInfosTypeBuilder {
         return Optional.of(contactInfosType);
     }
 
+    @SuppressWarnings("checkstyle:NPathComplexity")
     private static Optional<AddressesType> extractAddressesType(Accommodation accommodation) {
         if (accommodation.getAccoDetailMap() == null || accommodation.getAccoDetailMap().isEmpty()) {
             return Optional.empty();

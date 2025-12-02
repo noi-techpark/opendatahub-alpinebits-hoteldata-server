@@ -40,6 +40,7 @@ import java.util.function.Function;
 /**
  * Helper class to build {@link HotelInfoType} instances.
  */
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public final class HotelInfoTypeBuilder {
 
     private HotelInfoTypeBuilder() {

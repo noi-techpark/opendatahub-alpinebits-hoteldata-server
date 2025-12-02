@@ -46,6 +46,7 @@ import java.util.Optional;
 /**
  * Mapping utility class for inventory pull actions.
  */
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class InventoryPullMapper {
 
     private static final Logger LOG = LoggerFactory.getLogger(InventoryPullMapper.class);
