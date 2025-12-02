@@ -67,7 +67,7 @@ mvn -Dspring.profiles.active=local clean install
 Run the project:
 
 ```bash
-mvn -Dspring.profiles.active=local spring-boot:run
+mvn -Dspring-boot.run.profiles=local spring-boot:run -pl application-spring
 ```
 
 The service will be available at localhost and your specified server port.
