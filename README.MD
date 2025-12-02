@@ -85,7 +85,7 @@ Copy the file `.env.example` to `.env` and adjust the configuration parameters.
 Then you can start the application using the following command:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 The service will be available at localhost and your specified server port.
@@ -93,7 +93,7 @@ The service will be available at localhost and your specified server port.
 To execute the test you can run the following command:
 
 ```bash
-docker-compose run --rm app mvn clean test
+docker compose run --rm app mvn clean test
 ```
 
 ## Information
