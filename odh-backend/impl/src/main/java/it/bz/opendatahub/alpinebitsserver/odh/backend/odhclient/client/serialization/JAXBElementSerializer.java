@@ -17,14 +17,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
+import jakarta.xml.bind.JAXBElement;
 
-import javax.xml.bind.JAXBElement;
 import java.io.IOException;
 
 /**
  * Serialize {@link JAXBElement} instances into JSON data.
- *
+ * <p>
  * The serialized JSON contains the {@link JAXBElement#getValue()} and type
  * information taken from {@link JAXBElement#getDeclaredType()} to simplify
  * the deserialization.
@@ -37,8 +37,8 @@ public class JAXBElementSerializer extends JsonSerializer<JAXBElement> {
 
     public JAXBElementSerializer() {
         mapper = new ObjectMapper();
-        mapper.registerModule(new JaxbAnnotationModule());
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.registerModule(new JakartaXmlBindAnnotationModule());
+        mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
     }
 
     @Override

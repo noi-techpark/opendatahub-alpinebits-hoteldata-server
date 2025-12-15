@@ -21,7 +21,6 @@ import it.bz.opendatahub.alpinebits.xml.schema.ota.URLsType.URL;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * This middleware removes elements and attributes that are not allowed in AlpineBits 2018-10
@@ -64,7 +63,7 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
         // Set AreaID to null (AreaID is allowed in AlpineBits 2020-10)
         if (otaHotelDescriptiveInfoRS.getHotelDescriptiveContents() != null
                 && !otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().isEmpty()) {
-            otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0).setAreaID(null);
+            otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().getFirst().setAreaID(null);
         }
 
         extractContactInfoRootType(otaHotelDescriptiveInfoRS).ifPresent(contactInfoRootType -> {
@@ -82,7 +81,7 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
             removeUnsupportedURLs(contactInfoRootType);
             // A ContactInfos element must have URLs to be valid
             if (contactInfoRootType.getURLs() == null) {
-                otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0).setContactInfos(null);
+                otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().getFirst().setContactInfos(null);
             }
         });
     }
@@ -90,10 +89,10 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
     private Optional<ContactInfoRootType> extractContactInfoRootType(OTAHotelDescriptiveInfoRS ota) {
         if (ota.getHotelDescriptiveContents() != null
                 && !ota.getHotelDescriptiveContents().getHotelDescriptiveContents().isEmpty()
-                && ota.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0).getContactInfos() != null
-                && !ota.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0).getContactInfos().getContactInfos().isEmpty()
+                && ota.getHotelDescriptiveContents().getHotelDescriptiveContents().getFirst().getContactInfos() != null
+                && !ota.getHotelDescriptiveContents().getHotelDescriptiveContents().getFirst().getContactInfos().getContactInfos().isEmpty()
         ) {
-            return Optional.of(ota.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0).getContactInfos().getContactInfos().get(0));
+            return Optional.of(ota.getHotelDescriptiveContents().getHotelDescriptiveContents().getFirst().getContactInfos().getContactInfos().getFirst());
         }
         return Optional.empty();
     }
@@ -111,7 +110,7 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
                     result.setValue(url.getValue());
                     return result;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         if (urls.isEmpty()) {
             contactInfoRootType.setURLs(null);

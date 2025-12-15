@@ -15,22 +15,22 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth.AuthProvider;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth.AuthenticationException;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.serialization.OtaJaxbModule;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.Invocation;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.Map;
 
 /**
@@ -127,13 +127,13 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
         ObjectMapper om = new ObjectMapper();
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        om.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
 
         // Add module to support the Java Date/Time API
         om.registerModule(new JavaTimeModule());
 
         // Add module for better JAXB support
-        om.registerModule(new JaxbAnnotationModule());
+        om.registerModule(new JakartaXmlBindAnnotationModule());
 
         // Add serialization module for AlpineBits 2020-10 (JAXBElement serializations)
         om.registerModule(new OtaJaxbModule());
