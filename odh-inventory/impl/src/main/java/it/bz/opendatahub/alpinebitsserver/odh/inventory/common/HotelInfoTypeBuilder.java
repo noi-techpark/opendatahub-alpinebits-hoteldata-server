@@ -36,11 +36,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Helper class to build {@link HotelInfoType} instances.
  */
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public final class HotelInfoTypeBuilder {
 
     private HotelInfoTypeBuilder() {
@@ -132,7 +132,7 @@ public final class HotelInfoTypeBuilder {
                     return buildTextItem(language, description);
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
 
         if (textItemList.isEmpty()) {
             return Optional.empty();
@@ -184,12 +184,13 @@ public final class HotelInfoTypeBuilder {
                                 return buildImageDescription(language, value);
                             })
                             .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
+                            .toList();
 
                     imageItem.getDescriptions().addAll(descriptions);
 
                     return imageItem;
-                }).collect(Collectors.toList());
+                })
+                .toList();
 
         ImageItemsType imageItemsType = new ImageItemsType();
         imageItemsType.getImageItems().addAll(imageItemList);
@@ -281,7 +282,7 @@ public final class HotelInfoTypeBuilder {
                     return null;
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
 
         if (serviceList.isEmpty()) {
             return Optional.empty();

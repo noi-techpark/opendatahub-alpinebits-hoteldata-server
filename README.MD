@@ -29,13 +29,13 @@ The server implementation in this repository depends on the [AlpineBits library]
 
 ## Getting started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Take a look at the [Deployment](#deployment) section for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
 To build the project, the following prerequisites must be met:
 
-- Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
+- Java JDK 25 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
 
 If you want to run the application using [Docker](https://www.docker.com/), the environment is already set up with all dependencies for you. You only have to install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) and follow the instruction in the [dedicated section](#execute-with-docker).
@@ -67,7 +67,7 @@ mvn -Dspring.profiles.active=local clean install
 Run the project:
 
 ```bash
-mvn -Dspring.profiles.active=local spring-boot:run
+mvn -Dspring-boot.run.profiles=local spring-boot:run -pl application-spring
 ```
 
 The service will be available at localhost and your specified server port.
@@ -85,7 +85,7 @@ Copy the file `.env.example` to `.env` and adjust the configuration parameters.
 Then you can start the application using the following command:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 The service will be available at localhost and your specified server port.
@@ -93,7 +93,7 @@ The service will be available at localhost and your specified server port.
 To execute the test you can run the following command:
 
 ```bash
-docker-compose run --rm app mvn clean test
+docker compose run --rm app mvn clean test
 ```
 
 ## Information

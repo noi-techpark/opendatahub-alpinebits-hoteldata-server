@@ -17,12 +17,12 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accommodatio
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PullWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
+import jakarta.ws.rs.HttpMethod;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +76,7 @@ public class OdhBackendServiceImpl implements OdhBackendService {
                     HttpMethod.GET,
                     queryParams,
                     null,
-                    new GenericType<List<AccommodationRoom>>() {
+                    new GenericType<>() {
                     }
             );
             return Optional.of(accommodationRooms);
@@ -138,7 +138,7 @@ public class OdhBackendServiceImpl implements OdhBackendService {
                     HttpMethod.GET,
                     queryParams,
                     null,
-                    new GenericType<List<PullWrapper<OTAHotelDescriptiveInfoRS>>>() {
+                    new GenericType<>() {
                     }
             );
 
@@ -146,15 +146,15 @@ public class OdhBackendServiceImpl implements OdhBackendService {
                 return Optional.empty();
             }
 
-            return Optional.of(result.get(0).getMessage());
+            return Optional.of(result.getFirst().getMessage());
         } catch (Exception e) {
             return handleException(e);
         }
     }
 
     private <T> Optional<T> handleException(Exception e) {
-        if (e instanceof WebApplicationException) {
-            if (Response.Status.NOT_FOUND.equals(((WebApplicationException) e).getResponse().getStatusInfo())) {
+        if (e instanceof WebApplicationException webApplicationException) {
+            if (Response.Status.NOT_FOUND.equals(webApplicationException.getResponse().getStatusInfo())) {
                 return Optional.empty();
             }
             throw new OdhBackendException(e.getMessage(), e);

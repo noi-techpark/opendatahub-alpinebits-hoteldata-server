@@ -14,16 +14,22 @@ SPDX-License-Identifier: CC0-1.0
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
+        <version>4.0.0</version>
         <relativePath/>
     </parent>
 
     <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>alpinebitsserver-odh-root</artifactId>
-    <version>5.0.0</version>
+    <version>6.0.0</version>
 
     <packaging>pom</packaging>
+
     <name>AlpineBits Server with ODH as backend</name>
+    <description>Modular AlpineBits Server implementation using the AlpineBits Library and Open Data Hub (ODH) as backend.</description>
+    <url>https://www.alpinebits.org/</url>
+    <scm>
+        <url>https://github.com/noi-techpark/opendatahub-alpinebits-hoteldata-server</url>
+    </scm>
 
     <modules>
         <module>application-common</module>
@@ -34,37 +40,27 @@ SPDX-License-Identifier: CC0-1.0
         <module>odh-freerooms</module>
     </modules>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>maven-repo.opendatahub.com</id>-->
-<!--            <url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
-
     <properties>
-        <odh-alpinebits.version>4.0.1</odh-alpinebits.version>
+        <odh-alpinebits.version>5.0.0</odh-alpinebits.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-        <checkstyle-maven.version>3.1.1</checkstyle-maven.version>
-        <checkstyle.version>8.29</checkstyle.version>
+        <checkstyle-maven.version>3.6.0</checkstyle-maven.version>
         <maven-pmd-plugin.version>3.10.0</maven-pmd-plugin.version>
         <sonar-maven-plugin.version>3.4.0.905</sonar-maven-plugin.version>
         <jacoco.version>0.8.2</jacoco.version>
-
         <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
-        <dependency-check-maven.version>5.0.0</dependency-check-maven.version>
+        <dependency-check-maven.version>9.2.0</dependency-check-maven.version>
         <gitflow-maven-plugin.version>1.10.0</gitflow-maven-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 
-        <testng.version>7.5.1</testng.version>
-        <arquillian.version>1.8.0.Final</arquillian.version>
+        <testng.version>7.11.0</testng.version>
         <rest-assured.version>5.5.6</rest-assured.version>
 
-        <java.version>1.8</java.version>
+        <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skipTests>false</skipTests>
@@ -72,8 +68,8 @@ SPDX-License-Identifier: CC0-1.0
     </properties>
 
     <organization>
-        <name>IDM Südtirol - Alto Adige</name>
-        <url>https://www.idm-suedtirol.com</url>
+        <name>NOI Techpark - Alto Adige</name>
+        <url>https://noi.bz.it/</url>
     </organization>
 
     <developers>
@@ -162,106 +158,50 @@ SPDX-License-Identifier: CC0-1.0
 
     <dependencyManagement>
         <dependencies>
-            <!--
-                Use current version of commons-io to fix a security vulnerability
-                introduced by org.apache.commons:commons-fileupload2-javax in
-                alpinebits-servlet-impl module.
-            -->
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.20.0</version>
-            </dependency>
-            <!--
-                Use current version of commons-codec to fix a security vulnerability
-                introduced by io.rest-assured:rest-assured
-            -->
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.19.0</version>
-            </dependency>
-            <!--
-                Use most up-to-date compatible version of jackson-core to fix a security vulnerability
-                introduced by org.glassfish.jersey.media:jersey-media-json-jackson
-            -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>2.15.0</version>
-            </dependency>
-            <!--
-                Use most up-to-date compatible version of logback-classic to fix a security vulnerability
-                introduced by org.springframework.boot:spring-boot-starter-logging
-            -->
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>1.2.13</version>
-            </dependency>
-            <!--
-                Use most up-to-date compatible version of logback-core to fix a security vulnerability
-                introduced by org.springframework.boot:spring-boot-starter-logging
-            -->
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>1.2.13</version>
-            </dependency>
-            <!--
-                Use current version of commons-lang3 to fix a security vulnerability
-                introduced by io.rest-assured:rest-assured
-            -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.18.0</version>
-            </dependency>
-
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-environment</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-middleware-config</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-routing</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-api</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-impl</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-api</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-impl</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-api</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-impl</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
             </dependency>
 
             <!-- AlpineBits library dependencies -->
@@ -365,20 +305,6 @@ SPDX-License-Identifier: CC0-1.0
                 <version>${rest-assured.version}</version>
                 <scope>test</scope>
             </dependency>
-
-            <!-- Integration test dependencies -->
-            <dependency>
-                <groupId>org.jboss.arquillian.testng</groupId>
-                <artifactId>arquillian-testng-container</artifactId>
-                <version>${arquillian.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.arquillian.container</groupId>
-                <artifactId>arquillian-tomcat-embedded-8</artifactId>
-                <version>1.1.0.Final</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -391,8 +317,8 @@ SPDX-License-Identifier: CC0-1.0
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>25</source>
+                        <target>25</target>
                     </configuration>
                 </plugin>
 
@@ -410,7 +336,7 @@ SPDX-License-Identifier: CC0-1.0
                             <configuration>
                                 <rules>
                                     <requireJavaVersion>
-                                        <version>[1.8,)</version>
+                                        <version>[25,)</version>
                                     </requireJavaVersion>
                                     <requireMavenVersion>
                                         <version>[3.2.1,)</version>
@@ -447,13 +373,6 @@ SPDX-License-Identifier: CC0-1.0
                             </goals>
                         </execution>
                     </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.puppycrawl.tools</groupId>
-                            <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
 
                 <!-- Unit tests -->
@@ -479,17 +398,6 @@ SPDX-License-Identifier: CC0-1.0
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${maven-failsafe-plugin.version}</version>
-                    <configuration>
-                        <encoding>UTF-8</encoding>
-                        <!--
-                            ISSUE: org.apache.maven.surefire.booter.SurefireBooterForkException: The forked
-                                VM terminated without properly saying goodbye
-                            TEMP SOLUTION: set "useSystemClassLoader" to false
-                            See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=911925 and
-                                https://issues.apache.org/jira/browse/SUREFIRE-1588
-                        -->
-                        <useSystemClassLoader>false</useSystemClassLoader>
-                    </configuration>
                     <executions>
                         <execution>
                             <id>integration-test</id>
@@ -612,7 +520,6 @@ SPDX-License-Identifier: CC0-1.0
                     </executions>
                     <configuration>
                         <failBuildOnCVSS>8</failBuildOnCVSS>
-                        <cveValidForHours>24</cveValidForHours>
                         <skipProvidedScope>true</skipProvidedScope>
                     </configuration>
                 </plugin>

@@ -25,14 +25,14 @@ import it.bz.opendatahub.alpinebits.servlet.middleware.StatisticsMiddleware;
 import it.bz.opendatahub.alpinebitsserver.application.common.routing.RoutingMiddlewareProvider;
 import it.bz.opendatahub.alpinebitsserver.application.spring.middleware.MultipartFormExtractorMiddleware;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.middleware.OdhBackendServiceProvidingMiddleware;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
