@@ -41,7 +41,7 @@ SPDX-License-Identifier: CC0-1.0
     </modules>
 
     <properties>
-        <odh-alpinebits.version>5.0.0</odh-alpinebits.version>
+        <odh-alpinebits.version>5.0.1</odh-alpinebits.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
